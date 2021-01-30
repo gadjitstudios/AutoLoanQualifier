@@ -1,20 +1,25 @@
-input{
-    margin-left: 6px;
-}
-input:invalid{
-    border: solid 1pt red;
-    background-color: darksalmon;
-}
-input:invalid::placeholder{
-    color: red;
-}
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-input:valid{
-    border: revert;
-    background-color: revert;
-}
-
-.formBtn{
-    min-width: 30px;
-    margin: 6px;
+    label{
+        text-align: right;
+    }
+    input{
+        margin: 6px;
+    }
+    input:invalid{
+        border: dashed 2pt red;
+    }
+    input:invalid+span[class=invalidMsg]{
+        color: red;
+    }
+    input:valid{
+        border: revert;
+    }
+    button{
+        width: 12em;
+        margin: 6px;
+    }
 }

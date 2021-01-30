@@ -16,6 +16,9 @@ export default function AppLanding() {
         alert('Yay');
     }
     return (
+        <>
+        <h1>Auto Loan Details</h1>
         <AppInputOnlyForm formInputs={formInputs} handleFromSubmit={handleFromSubmit} />
+        </>
     )
 }

@@ -1,14 +1,14 @@
 import React, { useReducer, useRef } from 'react';
-import { InputValidation } from '../../services/inputValidation';
+import CheckInputValidity from '../../services/inputValidation';
 import './index.scss';
 
 const formReducer = (state, input) =>{
     if(input.target){
-        input.target.setCustomValidity(input.msg);
+        input.target.setCustomValidity(input.validity? '': input.value);
     }
     return{
         ...state,
-        [input.id]: {value: input.value, msg: input.msg}
+        [input.id]: {value: input.value, validity: input.validity}
     }
 }
 
@@ -16,65 +16,61 @@ const formReducer = (state, input) =>{
 export default function AppInputOnlyForm(props) {
     const formRef = useRef();
     const [formData, setFormData] = useReducer(formReducer, {});
-    const handleInputChange = ({target}) => setFormData({id: target.id, value: target.value, msg:'', target: target});
+    const handleInputChange = ({target}) => setFormData({id: target.id, value: target.value, validity:true, target: target});
     const handleInputBlur = ({target}) => validateInput(target);
 
     const handleFromSubmit = (e) => {
         e.preventDefault();
         let isFormValid = true;
-        for(const input of formRef.current){
-            isFormValid = validateInput(input)? isFormValid : false;
+        const inputs = formRef.current.getElementsByTagName('INPUT');
+        for(const target of inputs){
+            isFormValid = validateInput(target)? isFormValid : false;
         }
-        if(isFormValid) return;
+        if(inputs.Password1 && inputs.Password2){
+            if(inputs.Password1.value.localeCompare(inputs.Password2.value)){
+                setFormData({id: 'Password1', value: 'Passwords must match', validity: false, target: inputs.Password1});
+                setFormData({id: 'Password2', value: 'Passwords must match', validity: false, target: inputs.Password2});
+                isFormValid = false;
+            }
+        }
 
-        props.handleFromSubmit(formData);
+        if(isFormValid){
+            props.handleFromSubmit(formData, setFormData);
+        }        
     }
 
     const resetForm = (e) =>{
         e.preventDefault();
-        for(const input of formRef.current){
-            if(input.tagName != 'INPUT') return;
-            setFormData({id: input.id, value: '', msg: '', target: input});
+        for(const target of formRef.current.getElementsByTagName('INPUT')){
+            setFormData({id: target.id, value: '', validity: true, target: target});
         }
     }
 
     const validateInput = (target) =>{
-        if(target.tagName != 'INPUT') return;
-
-        const {dataset, value} = target;
-        let validation = {validity: true, value: value, message:''};
-        switch(dataset.type.toLowerCase()){
-            case 'currency':
-                validation = InputValidation.validateCurrency(value);
-            break;
-            case 'creditscore':
-                validation = InputValidation.validateCreditScore(value);
-            break;
-            case 'text':
-                validation = InputValidation.validateText(value);
-            break;
-            
-        }
-        setFormData({id: target.id, value: validation.value, msg: validation.message, target: target});
-        return validation.validity;
+        const {id, dataset, value} = target;
+        const result = CheckInputValidity({value: value, type: dataset.type});
+        setFormData({id: id, value: result.value, validity: result.validity,  target: target});
+        return result.validity;
     }
     return (
         <form onSubmit={handleFromSubmit} ref={formRef}>
             {props.formInputs && props.formInputs.map((input, index) => (
-                <React.Fragment key={`input-${index}-${input.type}`}>
+                <div className="formRow" key={`input-${index}-${input.type}`}>
                     <label htmlFor={input.id}>{input.label}</label>
                     <input
                         id={input.id}
                         data-type={input.type}
-                        value={formData[input.id]? formData[input.id].value : ''}
+                        value={formData[input.id] && formData[input.id].validity? formData[input.id].value : ''}
                         onChange={handleInputChange}
-                        onBlur={handleInputBlur}
-                        placeholder={formData[input.id]? formData[input.id].msg : ''}
                     />
-                </React.Fragment>
+                {formData[input.id] && !formData[input.id].validity && <span className='invalidMsg'>{formData[input.id].value}</span>}
+                </div>
             ))}
-            <button className='formBtn' onClick={resetForm}>Clear</button>
-            <button className='formBtn' type='submit'>Submit</button>
+            <div>
+                <button className='formBtn' onClick={resetForm}>Clear</button>
+                <button className='formBtn' type='submit'>Submit</button>
+            </div>
+            
         </form>
     )
 }

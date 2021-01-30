@@ -10,8 +10,8 @@ const formInputs = [
 
 export default function AppNewAccount() {
 
-    const handleFromSubmit = (e) => {
-        alert('Yay');
+    const handleFromSubmit = (formData) => {
+        
     }
     return (
         <AppInputOnlyForm formInputs={formInputs} handleFromSubmit={handleFromSubmit} />
