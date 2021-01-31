@@ -6,12 +6,22 @@ const handleFormSubmit = (formData, setDataForm) => {
     if(ValidateInputs(formData, setDataForm)){
         const data = {};
         Object.keys(formData).forEach(k => {data[k] = formData[k].value;});
-        ApiService.post('newaccount', data)
+        ApiService.post('autoloan', data)
         .then(response =>{
             if(response.ok)
-                History.push('/');
+                return response.json();
             else
                 throw new Error(`ERROR: ${response.status} - ${response.statusText}`);
+        })
+        .then(data => {
+            if(data){
+                if(data.hasQualified){
+                    History.push('new_account');
+                }else{
+                    History.push({pathname:'disqualification', state:{message: data.msg}});
+                }
+            }
+            
         })
         .catch(e => History.push({pathname:'error', state:{errorMsg: e.message}}));
     }

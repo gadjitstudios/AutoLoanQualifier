@@ -1,5 +1,6 @@
 import React from 'react';
-import AppInputOnlyForm from '../../components/InputOnlyForm';
+import AppBasicForm from '../../components/Basic-Form';
+import Data from './index.data';
 import './index.scss';
 
 const formInputs = [
@@ -10,15 +11,11 @@ const formInputs = [
     { id: "creditScore", label: "Estimated Credit Score", type: "creditScore" },
 ]
 
-export default function AppLanding() {
-
-    const handleFromSubmit = (e) => {
-        alert('Yay');
-    }
+export default function AppHome() {
     return (
         <>
-        <h1>Auto Loan Details</h1>
-        <AppInputOnlyForm formInputs={formInputs} handleFromSubmit={handleFromSubmit} />
+            <h1>Auto Loan Details</h1>
+            <AppBasicForm formInputs={formInputs} handleFormSubmit={Data.handleFormSubmit} />
         </>
     )
 }

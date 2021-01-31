@@ -1,5 +1,4 @@
 const isEmptyWhiteSpace = (input) => !input || input.length === 0 || /^\s+$/.test(input);
-const isFloat = (input) => input && /^[0-9\.]+$/.test(input);
 const isCurrency = (input) => input && /^[0-9\.\$]+$/.test(input);
 const isInt = (input) => input && /^[0-9]+$/.test(input);
 const isEmail = (input) => input && /\S+@\S+\.\S+/.test(input);
@@ -11,7 +10,7 @@ const parseCurrencyInput = (input) => {
 }
 const parseIntInput = (input) => isInt(input)? parseInt(input) : NaN;
 
-export default function CheckInputValidity(input){
+const CheckInputValidity = (input) => {
     if(isEmptyWhiteSpace(input.value)){
         return {validity: false, value: 'please enter a value'}; 
     }
@@ -52,4 +51,22 @@ export default function CheckInputValidity(input){
             return {validity: true, value: input.value};
     }
     return {validity: false, value: ''};
+}
+
+export function ValidateInputs(formData, setFormData){
+    let isFormValid = true;
+    for(const key of Object.keys(formData)){
+        const {type, value} = formData[key];
+        const result = CheckInputValidity({value: value, type:type});
+        setFormData({action:'upsert', id: key, value: result.value, validity: result.validity,  type: type});
+        isFormValid = result.validity? isFormValid : false;
+    }
+    if(formData.Password1 && formData.Password2){
+        if(formData.Password1.value.localeCompare(formData.Password2.value)){
+            setFormData({id: 'Password2', value: 'Passwords must match', validity: false, type: formData.Password2.type});
+            setFormData({id: 'Password1', value: 'Passwords must match', validity: false, type: formData.Password1.type});
+            isFormValid = false;
+        }
+    }
+    return isFormValid;
 }

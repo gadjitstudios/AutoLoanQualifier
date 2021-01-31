@@ -1,0 +1,34 @@
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .formRow{
+        display: inline-flex;
+
+        label{
+            text-align: right;
+        }
+        input{
+            margin: 6px;
+        }
+        input:invalid{
+            border: dashed 2pt red;
+        }
+        input:invalid+label[class=invalidMsg]{
+            color: red;
+            display: block;
+            text-align: left;
+        }
+        input:valid{
+            border: revert;
+        }
+        input:valid+label[class=invalidMsg]{
+            display: none;
+        }
+    }
+    button{
+        width: 12em;
+        margin: 6px;
+    }
+}

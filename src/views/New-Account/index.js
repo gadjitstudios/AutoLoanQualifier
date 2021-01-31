@@ -1,5 +1,6 @@
 import React from 'react';
-import AppInputOnlyForm from '../../components/InputOnlyForm';
+import AppBasicForm from '../../components/Basic-Form';
+import Data from './index.data';
 import './index.scss';
 
 const formInputs = [
@@ -9,11 +10,10 @@ const formInputs = [
 ]
 
 export default function AppNewAccount() {
-
-    const handleFromSubmit = (formData) => {
-        
-    }
     return (
-        <AppInputOnlyForm formInputs={formInputs} handleFromSubmit={handleFromSubmit} />
+        <>
+            <h1>New Account</h1>
+            <AppBasicForm formInputs={formInputs} handleFormSubmit={Data.handleFormSubmit} />
+        </>
     )
 }

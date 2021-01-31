@@ -1,8 +1,8 @@
 import React from 'react';
-import AppLanding from './Landing';
+import AppRouting from '../routing';
 
 export default function App(){
     return(
-        <AppLanding/>
+        <AppRouting/>
     )
 }
