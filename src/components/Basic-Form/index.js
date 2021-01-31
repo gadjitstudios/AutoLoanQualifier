@@ -1,4 +1,5 @@
 import React, { useReducer } from 'react';
+import PropTypes from 'prop-types';
 import './index.scss';
 
 const formReducer = (state, input) => {
@@ -82,4 +83,8 @@ export default function AppBasicForm(props) {
             </div>
         </form>
     )
+}
+AppBasicForm.prototype = {
+    formInputs: PropTypes.array,
+    handleFormSubmit: PropTypes.func  
 }
