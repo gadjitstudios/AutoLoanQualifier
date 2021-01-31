@@ -66,5 +66,5 @@ This app was quickly designed and written in a relatively short period of time, 
 
 Private routing and authentication were also left out of this application. Users are freely able to navigate to any page by simply changing the url of the browser.
 
-Lastly, error handling was another feature left out of this application. In general, this MVP is pretty stable using the InputValidation-service for cleaning data, however, this will not cover all potentially error-prone inputs. Common error checks, such as null checks, were also left out with the interest of time; as well as error redirects (such as a 404 page redirect).
+Lastly, error handling was another feature left out of this application. In general, this MVP is pretty stable using the InputValidation-service for cleaning data, however, this will not cover all potentially error-prone inputs. Common error checks, such as null checks, were also left out with the interest of time; as well as error redirects (such as a 404 page redirect). One feature that was added to aid in preventing some of these types of errors, was prop-type checking (using the prop-type library).
 
