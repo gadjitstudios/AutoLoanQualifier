@@ -16,6 +16,10 @@ export default function AppHome() {
         <>
             <h1>Auto Loan Details</h1>
             <AppBasicForm formInputs={formInputs} handleFormSubmit={Data.handleFormSubmit} />
+            <div id="marketingCopy">
+                <h3>Marketing Copy:</h3>
+                <p>Lorum Ipsem</p>
+            </div>
         </>
     )
 }
